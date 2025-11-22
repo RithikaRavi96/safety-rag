@@ -68,11 +68,11 @@ def verify(function, hazard, cause, k=8):
     # 2) Try exact metadata match
     exact = [d for d in docs if exact_match(d, function, hazard, cause)]
     if exact:
-        print("\n\n✅ Exact metadata match found:")
+        print("\n\n Exact metadata match found:")
         for i, d in enumerate(exact[:2], 1):
             show(d, i)
     else:
-        print("\n⚠️ No exact metadata match. The UI will fall back to the semantic top candidates.")
+        print("\n No exact metadata match. The UI will fall back to the semantic top candidates.")
 
 if __name__ == "__main__":
     # >>> Put the row you want to test here (copy EXACTLY from Excel) <<<
