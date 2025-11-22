@@ -4,14 +4,14 @@ from langchain_community.embeddings import OllamaEmbeddings
 # load the same embedding model used to build the index
 emb = OllamaEmbeddings(model="nomic-embed-text")
 
-# load the saved FAISS index
+
 db = FAISS.load_local(
     "indexes/safety_faiss",
     embeddings=emb,
     allow_dangerous_deserialization=True,  # required for FAISS load
 )
 
-# --- try a few example queries; change these as you like ---
+
 queries = [
     "wrong patient orientation risk and countermeasure",
     "radiation exposure hazard controls",
