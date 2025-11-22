@@ -1,4 +1,4 @@
-# chat_app.py
+
 from pathlib import Path
 import re
 import json
@@ -13,37 +13,37 @@ try:
 except ImportError:
     from langchain_community.embeddings import OllamaEmbeddings
 
-# --- LLM generator (Ollama local model) ---
+
 try:
     from langchain_ollama import ChatOllama
 except Exception:
-    ChatOllama = None  # handled gracefully
+    ChatOllama = None 
 
-# Use message objects to avoid tag echoing
+
 try:
     from langchain_core.messages import SystemMessage, HumanMessage
 except Exception:
     SystemMessage = None
     HumanMessage = None
 
-# -------------------------------
+
 # Config / paths
-# -------------------------------
+
 INDEX_DIR       = Path("indexes") / "safety_faiss"
-EXPORT_XLSX     = Path("data") / "hazard_requirement_key_list.xlsx"  # 5 columns only
-VALIDATION_LOG  = Path("data") / "validation_log.xlsx"               # UC-2 audit
+EXPORT_XLSX     = Path("data") / "hazard_requirement_key_list.xlsx"  
+VALIDATION_LOG  = Path("data") / "validation_log.xlsx"               
 EMBED_MODEL     = "nomic-embed-text"
 
 # Generation settings
-GEN_ENABLED       = True           # used ONLY when no exact match
-GEN_MODEL         = "llama3"       # or "llama3.1" — must exist in `ollama list`
-GEN_TEMPERATURE   = 0.2            # reduce drift
-NUM_CANDIDATES    = 2              # up to two candidates when we *must* generate
-MAX_REF_MESSAGES  = 3              # number of retrieved refs to feed LLM
+GEN_ENABLED       = True          
+GEN_MODEL         = "llama3"      
+GEN_TEMPERATURE   = 0.2            
+NUM_CANDIDATES    = 2              
+MAX_REF_MESSAGES  = 3             
 
-# -------------------------------
-# Retrieval helpers
-# -------------------------------
+
+
+
 def load_retriever(k: int = 12):
     emb = OllamaEmbeddings(model=EMBED_MODEL)
     vs  = FAISS.load_local(str(INDEX_DIR), embeddings=emb, allow_dangerous_deserialization=True)
@@ -57,9 +57,8 @@ def make_query(function: str, hazard: str, cause: str) -> str:
         "Return concise safety messages."
     )
 
-# -------------------------------
 # HRK handling (prefer sheet, else codes)
-# -------------------------------
+
 def get_hrk_from_meta(meta: dict) -> str | None:
     explicit = (meta.get("hazard_key") or "").strip()
     if explicit:
@@ -72,9 +71,9 @@ def get_hrk_from_meta(meta: dict) -> str | None:
         return "{hz_ga_" + f"F{F}G{G}U{U}M{M}" + "}"
     return None
 
-# -------------------------------
-# Accessors & utilities
-# -------------------------------
+
+
+
 def get_meta(doc) -> dict:
     return doc.metadata if isinstance(doc.metadata, dict) else {}
 
@@ -107,9 +106,9 @@ def make_triplet_id(f: str, h: str, c: str) -> str:
     key = (norm(f) + "|" + norm(h) + "|" + norm(c)).encode("utf-8")
     return "TRI-" + hashlib.sha1(key).hexdigest()[:10]
 
-# -------------------------------
-# Export helpers (5 columns only)
-# -------------------------------
+
+
+
 def to_row(function, hazard, cause, safety_message, hrk):
     return {
         "Function": function,
@@ -148,9 +147,9 @@ def append_to_excel(row: dict, path: Path):
             "Please close the Excel file and try again."
         ) from e
 
-# -------------------------------
-# Validation log (captures generated + refs)
-# -------------------------------
+
+
+
 def append_validation_log(triplet_id, f, h, c, gen_candidates, selected_idx, final_msg, hrk, ref_context):
     rows = {
         "timestamp":       [datetime.now().isoformat(timespec="seconds")],
@@ -177,9 +176,9 @@ def append_validation_log(triplet_id, f, h, c, gen_candidates, selected_idx, fin
         df_out = df_new
     df_out.to_excel(VALIDATION_LOG, index=False, engine="openpyxl")
 
-# -------------------------------
-# Intent parsing (multi-word robust)
-# -------------------------------
+
+
+
 def _clean(v: str) -> str:
     v = v.strip()
     if (v.startswith('"') and v.endswith('"')) or (v.startswith("'") and v.endswith("'")):
@@ -203,9 +202,8 @@ def parse_intent(text: str):
         return ("needs_fields", {"function":"","hazard":"","cause":""})
     return ("chat", None)
 
-# -------------------------------
-# Formatting helpers (STRICT reference layout)
-# -------------------------------
+ 
+
 def format_operator_manual_block(level: str, src: str, cons: str, cm: str) -> str:
     """Exact layout required for the visible/exported message."""
     level = (level or "CAUTION").strip().upper()
@@ -260,9 +258,9 @@ def normalize_reference_text(raw: str) -> str:
 
     return format_operator_manual_block(level, src, cons, cm)
 
-# -------------------------------
-# RAG-grounded generation (fallback ONLY)
-# -------------------------------
+
+
+
 GEN_SYSTEM = (
     "You generate operator safety messages for a medical imaging system.\n"
     "HARD RULES:\n"
@@ -348,9 +346,9 @@ def generate_candidates(function: str, hazard: str, cause: str, references: list
             print("[GENERATION ERROR]", repr(e))
         return []
 
-# -------------------------------
-# Streamlit UI
-# -------------------------------
+
+
+
 from PIL import Image
 
 st.set_page_config(page_title="Safety Chatbot", page_icon="🤖", layout="centered")
@@ -378,7 +376,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-# Load and show Siemens logo
+
 logo = Image.open("images/siemens_logo.png")
 
 col1, col2 = st.columns([4, 2])  # adjust spacing: 6 parts for title, 1 for logo
@@ -408,7 +406,7 @@ with st.sidebar:
     )
     st.caption(f"Excel path: {EXPORT_XLSX}")
 
-# Replay chat
+
 for m in st.session_state.messages:
     with st.chat_message(m["role"]):
         st.markdown(m["content"])
@@ -497,7 +495,7 @@ if user_text:
         with st.chat_message("assistant"): st.markdown(reply)
         st.session_state.messages.append({"role":"assistant","content":reply})
 
-# ---- Options Panel (generated or reference) ----
+
 if st.session_state.generated:
     st.markdown("### Safety Message Options")
     if st.session_state.triplet_id:
@@ -513,7 +511,7 @@ if st.session_state.generated:
                 st.session_state.selected_hrk = None
                 st.session_state.final_message = text  # default to displayed text
 
-    # Show current selection + manual edit
+   
     if st.session_state.selected_idx is None:
         st.info("No option selected yet.")
     else:
@@ -526,7 +524,7 @@ if st.session_state.generated:
             height=220
         )
 
-    # Confirm selection → compute HRK from best retrieved meta
+
     if st.button("Confirm selection", key="confirm_btn"):
         if st.session_state.selected_idx is None:
             st.warning("Pick an option first.")
@@ -537,7 +535,7 @@ if st.session_state.generated:
             if not st.session_state.selected_hrk:
                 st.warning("Cannot generate hazard key (codes missing from references). Provide codes or refine inputs.")
 
-            # Log
+           
             if st.session_state.last_inputs:
                 f, h, c = st.session_state.last_inputs
             else:
@@ -552,9 +550,9 @@ if st.session_state.generated:
                 st.session_state.ref_context
             )
 
-    # Final display / export hint
+  
     if st.session_state.selection_confirmed and st.session_state.selected_idx is not None:
-        st.markdown("### ✅ Selected")
+        st.markdown("###  Selected")
         st.write(st.session_state.final_message)
         if st.session_state.selected_hrk:
             st.markdown(f"**Hazard Key:** `{st.session_state.selected_hrk}`")
