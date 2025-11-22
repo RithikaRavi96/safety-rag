@@ -27,14 +27,14 @@ except Exception:
     HumanMessage = None
 
 
-# Config / paths
+
 
 INDEX_DIR       = Path("indexes") / "safety_faiss"
 EXPORT_XLSX     = Path("data") / "hazard_requirement_key_list.xlsx"  
 VALIDATION_LOG  = Path("data") / "validation_log.xlsx"               
 EMBED_MODEL     = "nomic-embed-text"
 
-# Generation settings
+
 GEN_ENABLED       = True          
 GEN_MODEL         = "llama3"      
 GEN_TEMPERATURE   = 0.2            
@@ -383,7 +383,7 @@ with col1:
     st.title("🤖 Safety Chatbot")
 with col2:
     st.image(logo, use_container_width=True)  # You can increase/decrease width if needed
-# Session state
+
 if "messages" not in st.session_state: st.session_state.messages = []
 if "generated" not in st.session_state: st.session_state.generated = []          # list[str]
 if "last_inputs" not in st.session_state: st.session_state.last_inputs = None
