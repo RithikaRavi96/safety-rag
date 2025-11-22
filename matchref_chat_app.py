@@ -57,7 +57,6 @@ def make_query(function: str, hazard: str, cause: str) -> str:
         "Return concise safety messages."
     )
 
-# HRK handling (prefer sheet, else codes)
 
 def get_hrk_from_meta(meta: dict) -> str | None:
     explicit = (meta.get("hazard_key") or "").strip()
@@ -220,7 +219,7 @@ def format_operator_manual_block(level: str, src: str, cons: str, cm: str) -> st
         f" {cm}"
     )
 
-# Try to parse a raw reference text (if already in the block layout or label-style)
+
 _REF_LEVEL_RE = re.compile(r"Operator\s*Manual[:\s-]*\s*(CAUTION|WARNING)", re.IGNORECASE)
 _REF_SOURCE_RE = re.compile(r"^\s*Source\s*:?\s*(.*)$", re.IGNORECASE | re.MULTILINE)
 _REF_CONS_RE1  = re.compile(r"^\s*Consequence\s*:?\s*(.*)$", re.IGNORECASE | re.MULTILINE)
@@ -236,11 +235,11 @@ def normalize_reference_text(raw: str) -> str:
     if not text:
         return ""
 
-    # If it already starts with "Operator Manual", assume it's correct and return as-is.
+  
     if text.lower().startswith("operator manual"):
         return text
 
-    # Otherwise, parse labels
+    
     level_m = _REF_LEVEL_RE.search(text)
     level = (level_m.group(1).upper() if level_m else "CAUTION")
 
@@ -252,7 +251,7 @@ def normalize_reference_text(raw: str) -> str:
     cons = cons_m.group(1).strip() if cons_m else ""
     cm = cm_m.group(1).strip() if cm_m else ""
 
-    # If we couldn't extract, fall back to stuffing whole text into Source (so nothing is lost)
+    
     if not (src or cons or cm):
         return format_operator_manual_block(level, text, "", "")
 
@@ -353,7 +352,7 @@ from PIL import Image
 
 st.set_page_config(page_title="Safety Chatbot", page_icon="🤖", layout="centered")
 
-# --- Custom Styling: Bigger chat box + disable spellcheck underline ---
+
 st.markdown("""
     <style>
         /* Make the chat input box larger */
@@ -430,18 +429,17 @@ if user_text:
             retriever = load_retriever(k=12)
             docs = retriever.get_relevant_documents(make_query(f, h, c))
 
-            # prefer exact match row(s)
+            
             exact_docs = [d for d in docs if exact_match(d, f, h, c)]
             refs = dedupe_keep_first(exact_docs or docs, limit=MAX_REF_MESSAGES)
 
-            # collect reference texts for display/logging
+           
             ref_texts = [get_ref_text(d) for d in refs if get_ref_text(d)]
             st.session_state.ref_context = ref_texts
 
-            # choose best codes/HRK from first ref for key generation
+         
             best_meta = get_meta(refs[0]) if refs else {}
 
-            # STRICT: if we have any exact reference → bypass LLM, show the reference(s) verbatim (normalized)
             if exact_docs:
                 normalized = []
                 for d in dedupe_keep_first(exact_docs, limit=NUM_CANDIDATES):
@@ -456,7 +454,7 @@ if user_text:
                 st.session_state._best_meta_for_hrk = best_meta
                 st.markdown(f"Found **exact reference**. Showing {len(normalized)} option(s) from reference (no generation).")
             else:
-                # No exact ref → cautious generation (fallback)
+                
                 gen = generate_candidates(f, h, c, ref_texts, NUM_CANDIDATES)
                 if not gen:
                     st.markdown("No messages could be generated. Adjust your inputs or check the local model.")
