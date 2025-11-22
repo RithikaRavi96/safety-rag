@@ -1,10 +1,10 @@
-# test_chat_ollama.py
+
 import json, re
 from langchain_ollama import ChatOllama
 from langchain_core.messages import SystemMessage, HumanMessage
 
-GEN_MODEL = "llama3"   # or "llama3.1"
-GEN_TEMPERATURE = 0.0  # reduce drift
+GEN_MODEL = "llama3"   
+GEN_TEMPERATURE = 0.0  
 
 GEN_SYSTEM = (
     "You generate operator safety messages for a medical imaging system.\n"
