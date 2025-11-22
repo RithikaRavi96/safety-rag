@@ -1,11 +1,11 @@
-print("Starting RAG smoke test...")
+print("Starting RAG test...")
 
 from langchain_community.vectorstores import FAISS
 from langchain_community.embeddings import OllamaEmbeddings
 from langchain_community.llms import Ollama
 from langchain.prompts import PromptTemplate
 
-# --- load index + retriever ---
+
 emb = OllamaEmbeddings(model="nomic-embed-text")
 db = FAISS.load_local(
     "indexes/safety_faiss",
@@ -14,7 +14,6 @@ db = FAISS.load_local(
 )
 retriever = db.as_retriever(search_kwargs={"k": 5})
 
-# --- simple, strict prompt to avoid hallucination ---
 template = """
 You are a safety & compliance assistant. Answer ONLY using the context.
 - If the answer is not in the context, say: "Insufficient context."
@@ -30,7 +29,7 @@ Answer:
 """
 PROMPT = PromptTemplate.from_template(template)
 
-# --- small helper: format retrieved docs into the prompt ---
+
 def format_context(docs):
     lines = []
     for d in docs:
@@ -40,10 +39,10 @@ def format_context(docs):
         lines.append(f"{tag} {text}")
     return "\n\n".join(lines)
 
-# --- choose a test query (change as you like) ---
+
 question = "What countermeasure should be taken for incorrect diagnosis basis due to wrong patient orientation?"
 
-# --- retrieve, build prompt, call LLM ---
+
 docs = retriever.get_relevant_documents(question)
 ctx = format_context(docs)
 
@@ -52,7 +51,7 @@ prompt = PROMPT.format(question=question, context=ctx)
 
 answer = llm.invoke(prompt)
 
-# --- show result + sources ---
+
 print("\n=== QUESTION ===")
 print(question)
 
