@@ -292,7 +292,7 @@ def _normalize_generated_messages(data: dict, n: int) -> list[str]:
         cons = (item.get("Consequences") or item.get("Consequence") or "").strip()
         cm   = (item.get("Countermeasure") or item.get("countermeasure") or "").strip()
         out.append(format_operator_manual_block(lvl, src, cons, cm))
-    # unique & limit
+  
     seen, uniq = set(), []
     for m in out:
         if m and m not in seen:
