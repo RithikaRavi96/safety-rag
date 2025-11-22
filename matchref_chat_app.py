@@ -550,7 +550,7 @@ if st.session_state.generated:
 
   
     if st.session_state.selection_confirmed and st.session_state.selected_idx is not None:
-        st.markdown("###  Selected")
+        st.markdown("### ✅ Selected")
         st.write(st.session_state.final_message)
         if st.session_state.selected_hrk:
             st.markdown(f"**Hazard Key:** `{st.session_state.selected_hrk}`")
