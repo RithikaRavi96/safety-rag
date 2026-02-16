@@ -3,6 +3,11 @@
 A lightweight RAG-based prototype that assists with **safety documentation** in regulated healthcare contexts.  
 The system retrieves validated safety messages by **Function–Hazard–Cause (FHC)** triplets and generates traceable responses with governance-friendly logs.
 
+## 📄 Thesis & Presentation
+
+- 📘 [Full Thesis (PDF)](docs/MasterThesis.pdf)
+- 📊 [Defense Slides (PDF)](docs/Defense.pdf)
+
 > Thesis context: GenAI governance, operational compliance, and traceability for safety documentation.
 
 ---
