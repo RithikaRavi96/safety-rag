@@ -13,7 +13,7 @@ except ImportError:
 from langchain_community.vectorstores import FAISS
 
 
-EXCEL_PATH = Path("data") / "test.xlsx"   # adjust if needed
+EXCEL_PATH = Path("data") / "sample.xlsx"   # adjust if needed
 SHEET = 0
 INDEX_DIR = Path("indexes") / "safety_faiss"
 CHUNK_SIZE = 700
