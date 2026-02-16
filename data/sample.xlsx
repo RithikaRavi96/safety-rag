@@ -1,0 +1,34 @@
+Function | Hazard | Cause | Safety Message | Hazard Key
+
+| Function               | Hazard                    | Cause                           | Safety Message                                       | Hazard Key |
+| ---------------------- | ------------------------- | ------------------------------- | ---------------------------------------------------- | ---------- |
+| Patient Registration   | Incorrect patient data    | Manual entry error              | Verify patient details before confirmation           | HK001      |
+| Scan Initialization    | Radiation exposure        | Incorrect exposure setting      | Confirm radiation parameters prior to scan           | HK002      |
+| Image Processing       | Data corruption           | Software malfunction            | Restart processing module and verify image integrity | HK003      |
+| Power Supply           | Electric shock            | Damaged cable                   | Inspect power cables before system startup           | HK004      |
+| Device Startup         | System failure            | Incomplete initialization       | Perform full system check before operation           | HK005      |
+| User Login             | Unauthorized access       | Weak password                   | Enforce strong password policy                       | HK006      |
+| Image Storage          | Data loss                 | Storage overflow                | Monitor storage capacity regularly                   | HK007      |
+| Calibration            | Inaccurate measurement    | Misaligned sensor               | Recalibrate sensors before diagnostic use            | HK008      |
+| Cooling System         | Overheating               | Blocked ventilation             | Ensure ventilation paths are unobstructed            | HK009      |
+| Data Export            | Privacy breach            | Unencrypted transfer            | Encrypt files before exporting data                  | HK010      |
+| Patient Positioning    | Misalignment              | Incorrect setup                 | Confirm patient alignment before scanning            | HK011      |
+| Software Update        | System instability        | Interrupted update              | Do not power off during update process               | HK012      |
+| Network Connection     | Data interception         | Insecure network                | Use secure network connections only                  | HK013      |
+| Alarm System           | Missed alert              | Muted notification              | Ensure alarms are active before operation            | HK014      |
+| Battery Backup         | Power interruption        | Battery depletion               | Check battery level before critical procedures       | HK015      |
+| User Interface         | Misinterpretation         | Ambiguous display message       | Provide clear visual warnings on screen              | HK016      |
+| Emergency Stop         | Delayed shutdown          | Mechanical blockage             | Test emergency stop function periodically            | HK017      |
+| Maintenance Mode       | Unauthorized modification | Access misconfiguration         | Restrict maintenance access to authorized staff      | HK018      |
+| System Logging         | Missing audit trail       | Logging disabled                | Enable logging before system deployment              | HK019      |
+| Temperature Monitoring | Thermal damage            | Sensor failure                  | Validate temperature sensors before operation        | HK020      |
+| Data Entry             | Incorrect configuration   | Dropdown misselection           | Confirm selected configuration before saving         | HK021      |
+| Imaging Mode           | Incorrect mode selection  | User confusion                  | Display confirmation before activating imaging mode  | HK022      |
+| Remote Access          | Unauthorized session      | Shared credentials              | Prohibit credential sharing                          | HK023      |
+| Hardware Connection    | Loose component           | Improper installation           | Secure all hardware components before use            | HK024      |
+| Backup System          | Incomplete backup         | Interrupted process             | Verify backup completion before shutdown             | HK025      |
+| System Clock           | Timestamp error           | Incorrect time setting          | Synchronize system clock with secure server          | HK026      |
+| File Upload            | Malware risk              | Unverified file source          | Scan files before upload                             | HK027      |
+| Device Transport       | Mechanical damage         | Improper handling               | Use protective packaging during transport            | HK028      |
+| Configuration Reset    | Loss of settings          | Accidental reset                | Confirm reset action before execution                | HK029      |
+| Signal Processing      | Noise interference        | External electromagnetic source | Isolate device from strong EM sources                | HK030      |
